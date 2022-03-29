@@ -1,0 +1,26 @@
+<form [formGroup]="loginForm">
+    <fieldset class="login-fieldsets">
+        <legend>Qui êtes-vous ?</legend>
+        <div class="login-containers">
+            <div class="login-labels">
+                <label for="username">Nom d'utilisateur</label>
+            </div>
+            <div class="login-inputs">
+                <input id="username" name="username" type="text" formControlName="username" />
+            </div>
+            <div class="login-labels">
+                <label for="password">Mot de passe</label>
+            </div>
+            <div class="login-inputs">
+                <input id="password" name="password" type="password" formControlName="password" />
+            </div>
+            <div class="btn-containers">
+                <button class="btn btn-primary" [disabled]="!loginForm.valid && !isLoading" (click)="onSubmit()">Se connecter</button>
+            </div>
+        </div>
+    </fieldset>
+</form>
+<div class="login-signups">
+    <p> Pas encore membre ? </p>
+    <button class="btn btn-primary" [routerLink]="'/signup'"> Créer mon compte </button>
+</div>

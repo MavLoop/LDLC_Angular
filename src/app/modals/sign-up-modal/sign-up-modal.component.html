@@ -1,0 +1,11 @@
+<div class="container">
+    <h3> {{title}} </h3>
+    <p> {{message}} </p>
+    <div *ngIf="isSuccess">
+        <button class="btn btn-primary modal-btn" [routerLink]="'signin'" (click)="this.modalService.hide()">Connexion</button>
+        <button class="btn btn-primary modal-btn" (click)="this.modalService.hide()">Fermer</button>
+    </div>
+    <div *ngIf="!isSuccess">
+        <button class="btn btn-primary modal-btn" (click)="this.modalService.hide()">Fermer</button>
+    </div>
+</div>

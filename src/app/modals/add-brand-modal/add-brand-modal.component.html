@@ -1,0 +1,13 @@
+<div class="container">
+    <h3> Ajouter une marque </h3>
+    <form [formGroup]="brandForm">
+        <div>
+            <label for="name">Nom de la marque</label>
+        </div>
+        <input type="text" id="name" formControlName="brandName" />
+        <div class="btn-container">
+            <button class="btn btn-primary modal-btn" [disabled]="!brandForm.valid" (click)="onSubmit()">Valider</button>
+            <button class="btn btn-primary modal-btn" (click)="this.bsModalRef.hide()">Annuler</button>
+        </div>
+    </form>
+</div>

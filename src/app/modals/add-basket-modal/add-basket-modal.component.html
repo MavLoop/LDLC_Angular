@@ -1,0 +1,13 @@
+<div class="container">
+    <h3> {{title}} </h3>
+    <p> {{message}} </p>
+
+    <div *ngIf="isSuccess" class="btn-container">
+        <button class="btn btn-primary modal-btn" [routerLink]="'basket'" (click)="this.bsModalRef.hide()">Mon panier</button>
+        <button class="btn btn-primary modal-btn" (click)="this.bsModalRef.hide()">Continuer mes achats</button>
+    </div>
+    <div *ngIf="!isSuccess" class="btn-container">
+        <button class="btn btn-primary modal-btn" [routerLink]="'signin'" (click)="this.bsModalRef.hide()">Connexion</button>
+        <button class="btn btn-primary modal-btn" (click)="this.bsModalRef.hide()">Fermer</button>
+    </div>
+</div>

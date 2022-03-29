@@ -1,0 +1,26 @@
+<div class="catalog-item">
+    <div class="item-card">
+        <div class="item-infos">
+            <img class="item-img" src="{{item.image}}" />
+            <div>
+                <div class="item-desc">
+                    <div>
+                        <h5>{{ item.name }}</h5>
+                    </div>
+                    <div>
+                        Marque : {{ item.brand.name }}
+                    </div>
+                    <div>Prix : {{ item.price }}€</div>
+                </div>
+            </div>
+        </div>
+        <div class="item-stock">
+            <div *ngIf="item.stock === 0">
+                <p>Hors stock</p>
+            </div>
+            <div *ngIf="item.stock > 0">
+                <p>En stock</p>
+            </div>
+        </div>
+    </div>
+</div>

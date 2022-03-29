@@ -1,0 +1,42 @@
+<form [formGroup]="signupForm">
+    <fieldset class="signup-fieldset">
+        <legend>Qui êtes-vous ?</legend>
+        <div class="signup-container">
+
+            <div class="signup-label">
+                <label for="mail">Adresse mail</label>
+            </div>
+            <div class="signup-input">
+                <input id="email" name="email" type="email" formControlName="email" />
+            </div>
+
+            <div class="signup-label">
+                <label for="username">Nom d'utilisateur</label>
+            </div>
+            <div class="signup-input">
+                <input id="username" name="username" type="text" formControlName="username" />
+            </div>
+
+            <div formGroupName="passwords">
+                <div class="signup-label">
+                    <label for="password">Mot de passe</label>
+                </div>
+                <div class="signup-input">
+                    <input id="password" name="password" type="password" formControlName="password" />
+                </div>
+
+                <div class="signup-label">
+                    <label for="password2">Confirmez votre mot de passe</label>
+                </div>
+                <div class="signup-input">
+                    <input id="password2" name="password2" type="password" formControlName="passwordConfirm" />
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <button [disabled]="!signupForm.valid" class="btn btn-primary" (click)="onSubmit()">S'inscrire</button>
+                <!-- <button (click)="openModal(template)">Test modal</button> -->
+            </div>
+        </div>
+    </fieldset>
+</form>

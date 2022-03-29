@@ -1,0 +1,32 @@
+.signup-fieldset {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 40vw;
+    margin-left: 30vw;
+    margin-top: 10vh;
+}
+
+.signup-signup {
+    margin-left: 30vw;
+}
+
+.signup-label {
+    margin: 5px;
+}
+
+.signup-input {
+    margin: 5px;
+}
+
+.btn-container {
+    margin: 5px;
+    margin-top: 10px;
+    padding: auto;
+}
+
+.signup-btn {
+    font-size: 16px;
+    border: none;
+}

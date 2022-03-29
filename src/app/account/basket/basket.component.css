@@ -1,0 +1,45 @@
+.list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 60vw;
+    margin-left: 20vw;
+    min-width: 500px;
+}
+
+.right {
+    right: 0;
+}
+
+.left {
+    left: 0;
+}
+
+.item-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    gap: 5px;
+    border: 1px solid black;
+}
+
+.item-img {
+    width: 60px;
+    height: 60px;
+}
+
+.action-box {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+}
+
+.delete-btn {
+    fill: red;
+}
+
+.view-btn {
+    fill: black;
+}

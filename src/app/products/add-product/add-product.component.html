@@ -1,0 +1,106 @@
+<p>add-product works!</p>
+
+<form [formGroup]="productForm" class="container">
+    <fieldset class="form-row">
+        <legend>Ajouter un nouveau produit</legend>
+        <div class="form-div">
+            <div class="form-div">
+                <label for="title">Nom du produit</label>
+                <input class="form-control" type="text" id="title" formControlName="title">
+            </div>
+            <div class="error" *ngIf="!productForm.get('title')?.valid && productForm.get('title')?.touched">
+                <p>Ce champ est requis</p>
+            </div>
+
+            <div class="form-div">
+                <label for="price">Prix</label>
+                <input class="form-control" type="number" id="price" min="0" formControlName="price">
+            </div>
+            <div class="error" *ngIf="!productForm.get('price')?.valid && productForm.get('price')?.touched">
+                <p>Ce champ est requis</p>
+            </div>
+
+            <div class="form-div">
+                <label for="stock">Quantité en stock</label>
+                <input class="form-input form-control" type="number" id="stock" min="0" formControlName="stock">
+            </div>
+            <div class="error" *ngIf="!productForm.get('stock')?.valid && productForm.get('stock')?.touched">
+                <p>Ce champ est requis</p>
+            </div>
+
+            <div class="form-div">
+                <label for="description">Description</label>
+                <input class="form-control" type="text" id="description" formControlName="description">
+            </div>
+            <div class="error" *ngIf="!productForm.get('description')?.valid && productForm.get('description')?.touched">
+                <p>Ce champ est requis</p>
+            </div>
+        </div>
+        <div class="form-div">
+            <div class="form-div">
+                <label for="brand">Marque du produit</label>
+                <select class="form-select" name="brand" id="brand" formControlName="brand">
+                    <option selected value="" class="form-option">-- Sélectionnez une marque --</option>
+                    <option class="form-option" *ngFor="let el of brands"> {{el.name}} </option>
+                </select>
+            </div>
+            <div class="error" *ngIf="!productForm.get('brand')?.valid && productForm.get('brand')?.touched">
+                <p>Ce champ est requis</p>
+            </div>
+            <div class="form-div">
+                <button class="btn btn-primary" (click)="addBrand()">Ajouter une marque</button>
+            </div>
+
+            <div class="form-div">
+                <label for="category">Catégorie</label>
+                <select class="form-select" name="category" id="category" formControlName="category">
+                    <option selected value="" class="form-option">-- Sélectionnez une catégorie --</option>
+                    <option class="form-option" *ngFor="let el of categories"> {{el.name}} </option>
+                </select>
+            </div>
+            <div class="error" *ngIf="!productForm.get('category')?.valid && productForm.get('category')?.touched">
+                <p>Ce champ est requis</p>
+            </div>
+
+            <div class="form-div">
+                <label for="image">Lien vers l'image</label>
+                <input class="form-control" type="text" id="image" formControlName="image">
+            </div>
+            <div class="error" *ngIf="!productForm.get('image')?.valid && productForm.get('image')?.touched">
+                <p>Ce champ est requis</p>
+            </div>
+        </div>
+        <div class="spec-form-container">
+            <div>
+                <div class="category-container" *ngFor="let el of specsMap | keyvalue">
+                    <div class="center-container">
+                        <div class="form-label spec">{{el.key}}</div>
+                        <a (click)="deleteContent(el.key, null)">
+                            <i-bs class="spec-action" name="x-lg"></i-bs>
+                        </a>
+                    </div>
+                    <div *ngIf="el.value.size === 0" class="sub-elements">
+                        <p>Aucun élément dans cette catégorie</p>
+                    </div>
+                    <div *ngIf="el.value.size > 0" class="sub-elements">
+                        <div class="spec-container" *ngFor="let sub of el.value | keyvalue">
+                            <div class="spec">{{sub.key}} : {{sub.value}}</div>
+                            <a class="spec-container" (click)="deleteContent(el.key, sub.key)">
+                                <i-bs class="spec-action" name="x-lg"></i-bs>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="center-container">
+                        <button class="btn btn-primary" (click)="addElement(el.key)">Ajouter un élément</button>
+                    </div>
+                </div>
+                <div class="center-container">
+                    <button class="btn btn-primary" (click)="addCategory()">Ajouter une catégorie</button>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <div class="center-container">
+        <button class="btn btn-primary btn-submit" [disabled]="!productForm.valid" (click)="onSubmit()">Valider</button>
+    </div>
+</form>

@@ -1,0 +1,32 @@
+.login-fieldsets {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 40vw;
+    margin-left: 30vw;
+    margin-top: 10vh;
+}
+
+.login-signups {
+    margin-left: 30vw;
+}
+
+.login-labels {
+    margin: 5px;
+}
+
+.login-inputs {
+    margin: 5px;
+}
+
+.btn-containers {
+    margin: 5px;
+    margin-bottom: 10px;
+    padding: auto;
+}
+
+.login-btns {
+    font-size: 16px;
+    border: none;
+}

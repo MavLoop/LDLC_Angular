@@ -1,0 +1,41 @@
+<ng-container *ngIf="product">
+    <div class="container">
+        <div>
+            <img class="product-img" src="{{product.image}}" />
+        </div>
+        <div class="product-infos">
+            <h2>{{product.name}}</h2>
+            <div>
+                <p>Fabriqué par {{product.brand.name}}</p>
+            </div>
+            <div>Prix : {{product.price}}€</div>
+        </div>
+        <div class="product-specs">
+            <div class="product-category-row" *ngFor="let category of obj | keyvalue">
+                <div class="product-category">
+                    <div class="product-category-text">
+                        {{category.key}}
+                    </div>
+                </div>
+                <div class="product-elements">
+                    <div class="product-element" *ngFor="let element of category.value | keyvalue">
+                        <div class="product-element-cell">
+                            {{element.key}}
+                        </div>
+                        <div class="product-element-cell">
+                            {{element.value}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-container" *ngIf="user.role !== 'ROLE_ADMIN' && product.stock > 0">
+            <button class="btn btn-success" (click)="addToBasket(product)">Ajouter au panier</button>
+        </div>
+
+        <div class="btn-container" *ngIf="user.role !== 'ROLE_ADMIN' && product.stock === 0">
+            <button class="btn btn-secondary" disabled>Stock épuisé</button>
+        </div>
+    </div>
+</ng-container>

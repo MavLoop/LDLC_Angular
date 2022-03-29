@@ -1,0 +1,30 @@
+<div class="container">
+    <h3> {{title}} </h3>
+
+    <p> Veuillez remplir les champs ci-dessous </p>
+    <form [formGroup]="elForm" *ngIf="function === 'element'">
+        <div>
+            <label for="name">Nom de l'élément</label>
+        </div>
+        <input type="text" id="name" formControlName="elName" />
+        <div>
+            <label for="desc">Description</label>
+        </div>
+        <input type="text" id="desc" formControlName="elDesc" />
+        <div class="btn-container">
+            <button class="btn btn-primary modal-btn" [disabled]="!elForm.valid" (click)="onSubmit()">Valider</button>
+            <button class="btn btn-primary modal-btn" (click)="this.bsModalRef.hide()">Annuler</button>
+        </div>
+    </form>
+
+    <form [formGroup]="catForm" *ngIf="function === 'category'">
+        <div>
+            <label for="name">Nom de la catégorie</label>
+        </div>
+        <input type="text" id="name" formControlName="catName" />
+        <div class="btn-container">
+            <button class="btn btn-primary modal-btn" [disabled]="!catForm.valid" (click)="onSubmit()">Valider</button>
+            <button class="btn btn-primary modal-btn" (click)="this.bsModalRef.hide()">Annuler</button>
+        </div>
+    </form>
+</div>

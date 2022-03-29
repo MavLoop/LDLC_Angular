@@ -1,0 +1,57 @@
+<div class="ldlc-navbar">
+    <div class="ldlc-left-items">
+        <div class="ldlc-nav-link" [routerLink]="'/home'">
+            <img class="ldlc-nav-logo" src="https://www.amd.com/system/files/2018-10/174787-ldlc-logo-1260x709.png" />
+        </div>
+        <div class="ldlc-dropdown">
+            <button class="ldlc-dropbtn">Produits</button>
+            <div class="ldlc-dropdown-content">
+                <div class="ldlc-dropdown-row">
+                    <div class="ldlc-dropdown-column">
+                        <img class="ldlc-dropdown-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPIlSqNAUGDzOlbwuc1ijXbA45PrjxggrFGw&usqp=CAU" alt="chip">
+                        <div class="ldlc-dropdown-links">
+                            <a [routerLink]="'/catalog/cpu'">Processeur</a>
+                            <a [routerLink]="'/catalog/gpu'">Carte graphique</a>
+                            <a [routerLink]="'/catalog/mobo'">Carte mère</a>
+                            <a [routerLink]="'/catalog/alim'">Alimentation</a>
+                            <a [routerLink]="'/catalog/ram'">Mémoire vive</a>
+                            <a [routerLink]="'/catalog/hdd'">Disques dur</a>
+                        </div>
+                    </div>
+                    <div class="ldlc-dropdown-column">
+                        <img class="ldlc-dropdown-img" src="https://cdn4.iconfinder.com/data/icons/internet-seo-and-online-activity/400/mouse_device_component_peripheral_hardware_computer-512.png" alt="mouse">
+                        <div class="ldlc-dropdown-links">
+                            <a [routerLink]="'/catalog/mouse'">Souris</a>
+                            <a [routerLink]="'/catalog/key'">Clavier</a>
+                            <a [routerLink]="'/catalog/screen'">Écran</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ldlc-right-items">
+        <div *ngIf="!isLoggedIn" class="ldlc-nav-item">
+            <button class="ldlc-navbtn" [routerLink]="'signin'">Connexion</button>
+        </div>
+        <div *ngIf="isLoggedIn" class="ldlc-nav-item">
+            <div>Bienvenue {{ user.username }}</div>
+        </div>
+        <div *ngIf="isLoggedIn" class="ldlc-dropdown">
+            <button class="ldlc-dropbtn">Mon compte</button>
+            <div class="ldlc-dropdown-content">
+                <div class="ldlc-dropdown-row">
+                    <div class="ldlc-dropdown-column">
+                        <a class="ldlc-dropdown-links"> Mes informations </a>
+                        <a class="ldlc-dropdown-links" *ngIf="user.role === 'ROLE_USER'" [routerLink]="'basket'"> Mon panier </a>
+                        <a class="ldlc-dropdown-links" *ngIf="user.role === 'ROLE_ADMIN'" [routerLink]="'products/add'"> Gestion des produits </a>
+                        <a class="ldlc-dropdown-links" (click)="signOut()">Déconnexion</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div *ngIf="isLoggedIn" class="ldlc-nav-item">
+            <button class="ldlc-navbtn" (click)="signOut()">Déconnexion</button>
+        </div> -->
+    </div>
+</div>
