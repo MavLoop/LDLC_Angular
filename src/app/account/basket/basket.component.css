@@ -30,6 +30,12 @@
     height: 60px;
 }
 
+.item-quantity {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
 .action-box {
     cursor: pointer;
     width: 40px;
@@ -42,4 +48,21 @@
 
 .view-btn {
     fill: black;
+}
+
+.button {
+    /* font-size: 2em; */
+    display: block;
+    border: .0625em solid #095776;
+    height: 25px;
+    width: 25px;
+    transition: 0.2s;
+    background: #fff;
+    color: #095776;
+    cursor: pointer;
+}
+
+.button:hover {
+    background: #095776;
+    color: #fff;
 }

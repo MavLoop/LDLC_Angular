@@ -48,7 +48,6 @@ export class ProductDetailsComponent implements OnInit {
       next: (data) => {
         this.product = data;
         this.obj = JSON.parse(this.product.specifications);
-        console.log(this.obj);
       },
       error: (e) => this.openErrorModal(e.message)
     });
@@ -60,7 +59,7 @@ export class ProductDetailsComponent implements OnInit {
     } else {
       this.basketService.addToBasket(this.user.id, product.id).subscribe({
         next: () => this.openModalWithComponent('Produit ajouté !', 'Vous pouvez désormais passer commande ou continuer vos achats', true),
-        error: (e) => this.openErrorModal(e.error.message)
+        error: (e) => this.openErrorModal(e.message)
       });
     }
   }

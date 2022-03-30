@@ -32,16 +32,45 @@ export class BasketComponent implements OnInit {
 
   updateTotal() {
     this.total = 0;
-    for(let el of this.basket.products) {
-      this.total += el.price;
+    for (let el of this.basket.basketDetails) {
+      this.total += el.product.price * el.quantity;
     }
   }
 
-  removeProduct(index: any) {
-    this.basket.products.splice(index, 1);
-    this.basketService.patchBasket(this.basket).subscribe({
-      next: data => {this.basket = data; this.updateTotal()},
-      error: (e) => console.error(e)
+  incrementQuantity(id: number) {
+    this.basketService.incrementQuantity(id).subscribe({
+      next: data => {
+        let index = this.basket.basketDetails.findIndex(x => x.id === data.id);
+        this.basket.basketDetails[index] = data;
+        this.updateTotal();
+      },
+      error: e => console.log(e.message)
+    })
+  }
+
+  decrementQuantity(id: number) {
+    this.basketService.decrementQuantity(id).subscribe({
+      next: data => {
+        let index = this.basket.basketDetails.findIndex(x => x.id === data.id);
+        if (data.quantity === 0) {
+          this.basket.basketDetails.splice(index, 1);
+        } else {
+          this.basket.basketDetails[index] = data;
+        }
+        this.updateTotal();
+      },
+      error: e => console.log(e.message)
+    })
+  }
+
+  removeProduct(id: number) {
+    this.basketService.deleteFromBasket(id).subscribe({
+      next: data => {
+        let index = this.basket.basketDetails.findIndex(x => x.id === data.id);
+        this.basket.basketDetails.splice(index, 1);
+        this.updateTotal();
+      },
+      error: e => console.log(e.message)
     })
   }
 }

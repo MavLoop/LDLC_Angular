@@ -106,6 +106,8 @@ export class AddProductComponent implements OnInit {
     this.productService.saveProduct(this.product).subscribe({
       next: data => {
         this.openSuccessModal('L\'artice a bien été ajouté au catalogue !');
+        this.initForm();
+        this.specsMap = new Map();
       },
       error: e => this.openErrorModal(e.error.message)
     });

@@ -5,7 +5,7 @@
     </div>
     <div *ngIf="dataSet.length > 0" class="catalog">
         <div class="catalog-container">
-            <app-item *ngFor="let item of dataSet" [item]="item" [routerLink]="'/product/'+item.id"></app-item>
+            <app-item class="catalog-item" *ngFor="let item of dataSet" [item]="item" [routerLink]="'/product/'+item.id"></app-item>
         </div>
     </div>
 </ng-container>

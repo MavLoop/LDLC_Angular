@@ -28,7 +28,7 @@ export class CatalogComponent implements OnInit {
 
   loadData() {
     this.productService.findByCategory(this.item).subscribe({
-      next: data => {this.dataSet = data; console.log(data)},
+      next: data => {this.dataSet = data},
       error: (e) => console.error(e)
     });
   }
