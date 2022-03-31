@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductDto } from 'src/app/_helpers/_dto/ProductDto';
 import { ProductService } from 'src/app/_services/product.service';
 
@@ -12,8 +12,9 @@ export class CatalogComponent implements OnInit {
 
   item!: string;
   dataSet!: ProductDto[];
+  isFilterTabOpen: boolean = false;
 
-  constructor(private route: ActivatedRoute, private productService: ProductService) {
+  constructor(private route: ActivatedRoute, private productService: ProductService, private router: Router) {
     this.route.paramMap.subscribe(data => {
       let param = data.get('item')
       if (param !== null) {
@@ -31,5 +32,9 @@ export class CatalogComponent implements OnInit {
       next: data => {this.dataSet = data},
       error: (e) => console.error(e)
     });
+  }
+
+  openFilterTab() {
+    this.isFilterTabOpen = !this.isFilterTabOpen;
   }
 }

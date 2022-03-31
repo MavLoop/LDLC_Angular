@@ -1,8 +1,7 @@
-<p>add-product works!</p>
-
-<form [formGroup]="productForm" class="container">
+<form *ngIf="productForm" [formGroup]="productForm" class="container">
     <fieldset class="form-row">
-        <legend>Ajouter un nouveau produit</legend>
+        <legend *ngIf="arg === 'add'">Ajouter un nouveau produit</legend>
+        <legend *ngIf="arg === 'patch'">Modifier un produit existant</legend>
         <div class="form-div">
             <div class="form-div">
                 <label for="title">Nom du produit</label>
@@ -40,8 +39,8 @@
             <div class="form-div">
                 <label for="brand">Marque du produit</label>
                 <select class="form-select" name="brand" id="brand" formControlName="brand">
-                    <option selected value="" class="form-option">-- Sélectionnez une marque --</option>
-                    <option class="form-option" *ngFor="let el of brands"> {{el.name}} </option>
+                    <option selected [ngValue]="null" class="form-option">-- Sélectionnez une marque --</option>
+                    <option class="form-option" [ngValue]="el.name" *ngFor="let el of brands"> {{el.name}} </option>
                 </select>
             </div>
             <div class="error" *ngIf="!productForm.get('brand')?.valid && productForm.get('brand')?.touched">
@@ -54,8 +53,8 @@
             <div class="form-div">
                 <label for="category">Catégorie</label>
                 <select class="form-select" name="category" id="category" formControlName="category">
-                    <option selected value="" class="form-option">-- Sélectionnez une catégorie --</option>
-                    <option class="form-option" *ngFor="let el of categories"> {{el.name}} </option>
+                    <option selected [ngValue]="null" class="form-option">-- Sélectionnez une catégorie --</option>
+                    <option class="form-option" [ngValue]="el.name" *ngFor="let el of categories"> {{el.name}} </option>
                 </select>
             </div>
             <div class="error" *ngIf="!productForm.get('category')?.valid && productForm.get('category')?.touched">
@@ -71,21 +70,24 @@
             </div>
         </div>
         <div class="spec-form-container">
+            <div class="center-container">
+                <h4>Spécifications</h4>
+            </div>
             <div>
-                <div class="category-container" *ngFor="let el of specsMap | keyvalue">
+                <div class="category-container" *ngFor="let el of specs | keyvalue">
                     <div class="center-container">
                         <div class="form-label spec">{{el.key}}</div>
                         <a (click)="deleteContent(el.key, null)">
                             <i-bs class="spec-action" name="x-lg"></i-bs>
                         </a>
                     </div>
-                    <div *ngIf="el.value.size === 0" class="sub-elements">
+                    <div *ngIf="(el | json) == ({} | json)" class="sub-elements">
                         <p>Aucun élément dans cette catégorie</p>
                     </div>
-                    <div *ngIf="el.value.size > 0" class="sub-elements">
+                    <div *ngIf="(el | json) != ({} | json)" class="sub-elements">
                         <div class="spec-container" *ngFor="let sub of el.value | keyvalue">
                             <div class="spec">{{sub.key}} : {{sub.value}}</div>
-                            <a class="spec-container" (click)="deleteContent(el.key, sub.key)">
+                            <a (click)="deleteContent(el.key, sub.key)">
                                 <i-bs class="spec-action" name="x-lg"></i-bs>
                             </a>
                         </div>
@@ -101,6 +103,7 @@
         </div>
     </fieldset>
     <div class="center-container">
-        <button class="btn btn-primary btn-submit" [disabled]="!productForm.valid" (click)="onSubmit()">Valider</button>
+        <button *ngIf="arg === 'add'" class="btn btn-primary btn-submit" [disabled]="!productForm.valid" (click)="onSubmitSave()">Valider</button>
+        <button *ngIf="arg === 'patch'" class="btn btn-primary btn-submit" [disabled]="!productForm.valid" (click)="onSubmitPatch()">Enregistrer</button>
     </div>
 </form>

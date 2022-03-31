@@ -1,11 +1,37 @@
+<div class="filter-tab-container">
+    <button class="btn btn-primary" (click)="openFilterTab()"> {{isFilterTabOpen ? 'Cacher les filtres' : 'Afficher les filtres'}}</button>
+    <div class="filter-tab" [hidden]="isFilterTabOpen === false">
+        <div class="filter-field">
+            <div>
+                <label for="name">Rechercher par nom</label>
+            </div>
+            <input type="text" id="name" name="name" />
+        </div>
+    </div>
+</div>
 <ng-container *ngIf="dataSet">
-    <div *ngIf="dataSet.length === 0" class="catalog">
-        <h1>Hmmm ...</h1>
-        <p>Il semblerait que cette section soit vide !</p>
+    <div *ngIf="dataSet.length === 0" class="center">
+        <div>
+            <h1>Hmmm ...</h1>
+        </div>
+        <div>
+            <p>Il semblerait que cette section soit vide !</p>
+        </div>
     </div>
     <div *ngIf="dataSet.length > 0" class="catalog">
         <div class="catalog-container">
-            <app-item class="catalog-item" *ngFor="let item of dataSet" [item]="item" [routerLink]="'/product/'+item.id"></app-item>
+            <app-item class="catalog-item" *ngFor="let item of dataSet" [item]="item"></app-item>
+        </div>
+    </div>
+    <div *ngIf="dataSet.length > 0" class="center">
+        <div class="page-control-container">
+            <div class="page-control page-control-button">
+                <i-bs name="chevron-left" width="22" height="22"></i-bs>
+            </div>
+            <div class="page-control page-info"></div>
+            <div class="page-control page-control-button">
+                <i-bs name="chevron-right" width="22" height="22"></i-bs>
+            </div>
         </div>
     </div>
 </ng-container>

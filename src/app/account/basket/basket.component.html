@@ -1,40 +1,42 @@
-<div *ngIf="basket">
-    <div *ngIf="basket.basketDetails.length === 0">
+<div class="center" *ngIf="basket">
+    <div class="center" *ngIf="basket.basketDetails.length === 0">
         <h3>C'est vide !</h3>
         <p>Il est temps de remplir ce panier</p>
     </div>
 
     <div *ngIf="basket.basketDetails.length > 0" class="list-container">
-        <div *ngFor="let element of basket.basketDetails" class="item-container">
+        <div *ngFor="let element of basket.basketDetails; let indexOfelement=index;" class="item-container">
             <img class="item-img" src="{{element.product.image}}" alt="">
             <div>
                 {{element.product.name}}
             </div>
             <div> {{element.product.price}}€ </div>
             <div class="item-quantity">
-                <button class="button" (click)="decrementQuantity(element.id)">-</button>
+                <button class="button" (click)="decrementQuantity(element.id, indexOfelement)">-</button>
                 <div>
                     x{{element.quantity}}
                 </div>
-                <button class="button" (click)="incrementQuantity(element.id)">+</button>
+                <button class="button" (click)="incrementQuantity(element.id, indexOfelement)">+</button>
             </div>
-            <div>
+            <div class="action-container">
                 <div class="action-box" [routerLink]="'/product/' + element.id">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="view-btn" viewBox="0 0 16 16">
-                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
-                    </svg>
+                    <i-bs class="eye" name="eye" width="32" height="32"></i-bs>
                 </div>
-                <div class="action-box" (click)="removeProduct(element.id)">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="delete-btn" viewBox="3 3 10 10">
-                        <path
-                        d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                    </svg>
+                <div class="action-box" (click)="removeProduct(element.id, indexOfelement)">
+                    <i-bs class="trash" name="trash" width="32" height="32"></i-bs>
                 </div>
             </div>
         </div>
     </div>
     <div class="center">
-        Total du panier : {{total}}€
+        <div>
+            Total du panier : {{total}}€
+        </div>
+        <div class="sum-div">
+            <button class="btn btn-success" [disabled]="basket.basketDetails.length === 0 || !isBasketValid">Passer commande</button>
+        </div>
+        <div class="error" *ngIf="isBasketValid === false">
+            <p>Tous les articles ne sont pas disponibles !</p>
+        </div>
     </div>
 </div>

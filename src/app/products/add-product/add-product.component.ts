@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AddBrandModalComponent } from 'src/app/modals/add-brand-modal/add-brand-modal.component';
 import { AddProductModalComponent } from 'src/app/modals/add-product-modal/add-product-modal.component';
@@ -7,6 +8,7 @@ import { ErrorComponent } from 'src/app/modals/error/error.component';
 import { SuccessComponent } from 'src/app/modals/success/success.component';
 import { BrandDto } from 'src/app/_helpers/_dto/BrandDto';
 import { CategoryDto } from 'src/app/_helpers/_dto/CategoryDto';
+import { ProductDto } from 'src/app/_helpers/_dto/ProductDto';
 import { SaveProductDto } from 'src/app/_helpers/_dto/SaveProductDto';
 import { BrandService } from 'src/app/_services/brand.service';
 import { CategoryService } from 'src/app/_services/category.service';
@@ -19,44 +21,61 @@ import { ProductService } from 'src/app/_services/product.service';
 })
 export class AddProductComponent implements OnInit {
 
+  arg!: string;
+  id!: number;
   productForm!: FormGroup;
-  specsMap: Map<string, Map<string, string>> = new Map();
+  specs: { [k: string]: { [k: string]: string } } = {};
   obj: Object = {};
   bsModalRef!: BsModalRef;
   eventRes!: Object;
   brands!: BrandDto[];
   categories!: CategoryDto[];
-  product: SaveProductDto = {
-    name: '',
-    brand: '',
-    price: 0,
-    description: '',
-    stock: 0,
-    specifications: undefined,
-    category: '',
-    image: ''
-  }
-  brand!: BrandDto;
 
-  constructor(private fb: FormBuilder, private bsModalService: BsModalService,
+  constructor(private fb: FormBuilder, private bsModalService: BsModalService, private route: ActivatedRoute,
     private brandService: BrandService, private categoryService: CategoryService, private productService: ProductService) {
+    this.route.paramMap.subscribe(param => {
+      let p = param.get('action');
+      if (p !== null) {
+        this.arg = p;
+        if (p === 'patch') {
+          let i = param.get('id');
+          if (i !== null) {
+            this.id = parseInt(i);
+          }
+        }
+      }
+    });
     this.initBrands();
     this.initCategories();
-    this.initForm();
+    this.initFormFromArgument();
   }
 
   ngOnInit(): void {
   }
 
-  initForm() {
+  initFormFromArgument() {
+    if (this.arg === 'add') {
+      this.initForm('', 0, 0, '', '', '', '');
+    } else {
+      this.productService.findById(this.id).subscribe({
+        next: data => {
+          this.initForm(data.name, data.price, data.stock, data.description, data.brand.name, data.category.name, data.image);
+          this.specs = JSON.parse(data.specifications);
+        },
+        error: e => console.error(e.message)
+      })
+    }
+  }
+
+  initForm(title: string, price: number, stock: number, description: string, brand: string, category: string, image: string) {
     this.productForm = this.fb.group({
-      title: ['', Validators.required],
-      price: ['', Validators.required],
-      stock: ['', Validators.required],
-      description: ['', Validators.required],
-      brand: ['', [Validators.required, this.brandValidator]],
-      category: ['', [Validators.required, this.categoryValidator]],
-      image: ['', Validators.required]
+      title: [title, Validators.required],
+      price: [price, Validators.required],
+      stock: [stock, Validators.required],
+      description: [description, Validators.required],
+      brand: [brand, [Validators.required, this.brandValidator]],
+      category: [category, [Validators.required, this.categoryValidator]],
+      image: [image, Validators.required]
     });
   }
 
@@ -73,10 +92,10 @@ export class AddProductComponent implements OnInit {
   }
 
   deleteContent(category: string, spec: string | null) {
-    if(spec === null) {
-      this.specsMap.delete(category);
+    if (spec === null) {
+      delete this.specs[category];
     } else {
-      this.specsMap.get(category)?.delete(spec);
+      delete this.specs[category][spec]
     }
   }
 
@@ -89,44 +108,58 @@ export class AddProductComponent implements OnInit {
 
   initCategories() {
     this.categoryService.findAll().subscribe({
-      next: value => this.categories = value,
+      next: value => {
+        this.categories = value
+      },
       error: (e) => console.error(e)
     });
   }
 
-  onSubmit() {
-    this.product.name = this.productForm.get('title')?.value;
-    this.product.brand = this.productForm.get('brand')?.value;
-    this.product.price = this.productForm.get('price')?.value;
-    this.product.stock = this.productForm.get('stock')?.value;
-    this.product.description = this.productForm.get('description')?.value;
-    this.product.specifications = this.translateMapToObject();
-    this.product.category = this.productForm.get('category')?.value;
-    this.product.image = this.productForm.get('image')?.value;
-    this.productService.saveProduct(this.product).subscribe({
+  onSubmitSave() {
+    const product: SaveProductDto = {
+      name: this.productForm.get('title')?.value,
+      brand: this.productForm.get('brand')?.value,
+      price: this.productForm.get('price')?.value,
+      description: this.productForm.get('description')?.value,
+      stock: this.productForm.get('stock')?.value,
+      specifications: JSON.stringify(this.specs),
+      category: this.productForm.get('category')?.value,
+      image: this.productForm.get('image')?.value
+    }
+    this.productService.saveProduct(product).subscribe({
       next: data => {
         this.openSuccessModal('L\'artice a bien été ajouté au catalogue !');
-        this.initForm();
-        this.specsMap = new Map();
+        this.initFormFromArgument();
+        this.specs = {};
       },
       error: e => this.openErrorModal(e.error.message)
     });
   }
 
-  translateMapToObject() {
-    let obj: { [k: string]: any } = {};
-    console.log('json object', JSON.stringify(Object.fromEntries(this.specsMap.entries())));
-    for (let key of this.specsMap.keys()) {
-      let subObj: { [k: string]: string | undefined } = {};
-      let iterable = this.specsMap.get(key)?.keys();
-      if (iterable !== undefined) {
-        for (let subKey of iterable) {
-          subObj[subKey] = this.specsMap.get(key)?.get(subKey);
-        }
+  onSubmitPatch() {
+    const brand = this.brands.find(x => x.name === this.productForm.get('brand')?.value);
+    const category = this.categories.find(x => x.name === this.productForm.get('category')?.value);
+    if (brand !== undefined && category !== undefined) {
+      const product: ProductDto = {
+        id: this.id,
+        name: this.productForm.get('title')?.value,
+        description: this.productForm.get('description')?.value,
+        brand: brand,
+        price: this.productForm.get('price')?.value,
+        specifications: JSON.stringify(this.specs),
+        image: this.productForm.get('image')?.value,
+        stock: this.productForm.get('stock')?.value,
+        category: category
       }
-      obj[key] = subObj;
+      this.productService.updateProduct(product).subscribe({
+        next: () => {
+          this.openSuccessModal('L\'artice a bien été ajouté au catalogue !');
+          this.initFormFromArgument();
+          this.specs = {};
+        },
+        error: e => console.error(e.message)
+      })
     }
-    return JSON.stringify(obj);
   }
 
   brandValidator(c: AbstractControl): any {
@@ -146,7 +179,6 @@ export class AddProductComponent implements OnInit {
   }
 
   public openProductModalWithComponent(title: string, message: string, func: string, key: any) {
-    /* this is how we open a Modal Component from another component */
     const initialState = {
       'title': title,
       'message': message,
@@ -154,17 +186,24 @@ export class AddProductComponent implements OnInit {
     };
     this.bsModalRef = this.bsModalService.show(AddProductModalComponent, { initialState });
 
-    this.bsModalRef.content.event.subscribe((res: any) => {
+    this.bsModalRef.content.event.subscribe((res: { name: string, desc: string }) => {
       if (key === null) {
-        this.specsMap.set(res.name, new Map<string, string>());
+        this.specs[res.name] = {};
       } else {
-        this.specsMap.get(key)?.set(res.name, res.desc);
+        let test = JSON.stringify(this.specs[key]);
+        if (test.length === 2) {
+          test = test.substring(0, test.length - 1) + '"' + res.name + '":"' + res.desc + '"}';
+        } else {
+          test = test.substring(0, test.length - 1) + ',"' + res.name + '":"' + res.desc + '"}';
+        }
+        console.log(test);
+        console.log('parsed', JSON.parse(test));
+        this.specs[key] = JSON.parse(test);
       }
     });
   }
 
   public openBrandModalWithComponent() {
-    /* this is how we open a Modal Component from another component */
     this.bsModalRef = this.bsModalService.show(AddBrandModalComponent);
 
     this.bsModalRef.content.event.subscribe((res: any) => {

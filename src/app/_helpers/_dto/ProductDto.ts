@@ -1,4 +1,5 @@
 import { BrandDto } from "./BrandDto";
+import { CategoryDto } from "./CategoryDto";
 
 export interface ProductDto {
     id: number;
@@ -7,6 +8,7 @@ export interface ProductDto {
     brand: BrandDto;
     price: number;
     specifications: string;
+    category: CategoryDto;
     image: string;
     stock: number;
 }

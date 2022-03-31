@@ -12,6 +12,7 @@ export class BasketComponent implements OnInit {
 
   basket!: BasketDto;
   total: number = 0;
+  isBasketValid!: boolean;
 
   constructor(private basketService: BasketService) {
     this.loadBasket();
@@ -32,30 +33,32 @@ export class BasketComponent implements OnInit {
 
   updateTotal() {
     this.total = 0;
+    this.isBasketValid = true;
     for (let el of this.basket.basketDetails) {
       this.total += el.product.price * el.quantity;
+      if(el.quantity > el.product.stock) {
+        this.isBasketValid = false;
+      }
     }
   }
 
-  incrementQuantity(id: number) {
+  incrementQuantity(id: number, index: number) {
     this.basketService.incrementQuantity(id).subscribe({
       next: data => {
-        let index = this.basket.basketDetails.findIndex(x => x.id === data.id);
-        this.basket.basketDetails[index] = data;
+        this.basket.basketDetails[index].quantity = data.quantity;
         this.updateTotal();
       },
       error: e => console.log(e.message)
     })
   }
 
-  decrementQuantity(id: number) {
+  decrementQuantity(id: number, index: number) {
     this.basketService.decrementQuantity(id).subscribe({
       next: data => {
-        let index = this.basket.basketDetails.findIndex(x => x.id === data.id);
         if (data.quantity === 0) {
           this.basket.basketDetails.splice(index, 1);
         } else {
-          this.basket.basketDetails[index] = data;
+          this.basket.basketDetails[index].quantity = data.quantity;
         }
         this.updateTotal();
       },
@@ -63,10 +66,9 @@ export class BasketComponent implements OnInit {
     })
   }
 
-  removeProduct(id: number) {
+  removeProduct(id: number, index: number) {
     this.basketService.deleteFromBasket(id).subscribe({
       next: data => {
-        let index = this.basket.basketDetails.findIndex(x => x.id === data.id);
         this.basket.basketDetails.splice(index, 1);
         this.updateTotal();
       },

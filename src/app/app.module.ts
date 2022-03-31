@@ -25,11 +25,16 @@ import { AddBrandModalComponent } from './modals/add-brand-modal/add-brand-modal
 import { ErrorComponent } from './modals/error/error.component';
 import { SuccessComponent } from './modals/success/success.component';
 import { NgxBootstrapIconsModule } from 'ngx-bootstrap-icons';
-import { pencil, xLg } from 'ngx-bootstrap-icons';
+import { pencil, xLg, eye, trash, chevronLeft, chevronRight  } from 'ngx-bootstrap-icons';
+import { AccountDetailsComponent } from './account/account-details/account-details.component';
 // Select some icons (use an object, not an array)
 const icons = {
   pencil,
-  xLg
+  xLg,
+  eye,
+  trash,
+  chevronLeft,
+  chevronRight
 };
 
 @NgModule({
@@ -50,7 +55,8 @@ const icons = {
     AddProductModalComponent,
     AddBrandModalComponent,
     ErrorComponent,
-    SuccessComponent
+    SuccessComponent,
+    AccountDetailsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-<div class="catalog-item">
+<div class="catalog-item" (click)="viewItem(item.id)">
     <div class="item-card">
         <div class="item-infos">
             <img class="item-img" src="{{item.image}}" />
@@ -13,6 +13,12 @@
                     <div>Prix : {{ item.price }}€</div>
                 </div>
             </div>
+        </div>
+        <div *ngIf="user.role === 'ROLE_ADMIN'">
+            <a (click)="editItem(item.id)">
+                <i-bs name="pencil" width="40" height="40">
+                </i-bs>
+            </a>
         </div>
         <div class="item-stock">
             <div *ngIf="item.stock === 0">

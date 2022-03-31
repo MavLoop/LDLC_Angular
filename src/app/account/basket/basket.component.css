@@ -1,18 +1,12 @@
 .list-container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    width: 60vw;
-    margin-left: 20vw;
-    min-width: 500px;
+    border: 1px solid rgb(167, 160, 160);
+    border-bottom: 0px;
 }
 
-.right {
-    right: 0;
-}
-
-.left {
-    left: 0;
+.item-container:nth-child(2n) {
+    background: rgb(250, 250, 250);
 }
 
 .item-container {
@@ -20,9 +14,9 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: 5px;
+    padding: 12px;
     gap: 5px;
-    border: 1px solid black;
+    border-bottom: 1px solid rgb(167, 160, 160);
 }
 
 .item-img {
@@ -36,22 +30,22 @@
     gap: 10px;
 }
 
+.action-container {
+    display: flex;
+    flex-direction: row;
+    gap: 3px;
+}
+
 .action-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
     width: 40px;
     height: 40px;
 }
 
-.delete-btn {
-    fill: red;
-}
-
-.view-btn {
-    fill: black;
-}
-
 .button {
-    /* font-size: 2em; */
     display: block;
     border: .0625em solid #095776;
     height: 25px;
@@ -65,4 +59,57 @@
 .button:hover {
     background: #095776;
     color: #fff;
+}
+
+.center {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sum-div {
+    margin-top: 15px;
+}
+
+.eye {
+    color: black;
+}
+
+.trash {
+    color: rgb(207, 16, 16);
+}
+
+@media (min-width: 1081px) {
+    .list-container {
+        width: 50vw;
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+@media (max-width: 1080px) {
+    .list-container {
+        width: 60vw;
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+@media (max-width: 720px) {
+    .list-container {
+        width: 80vw;
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+@media (max-width: 550px) {
+    .list-container {
+        width: 100vw;
+        margin-right: 0;
+        margin-left: 0;
+    }
 }

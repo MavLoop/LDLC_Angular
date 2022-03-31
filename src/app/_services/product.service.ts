@@ -30,4 +30,8 @@ export class ProductService {
   saveProduct(product: SaveProductDto) {
     return this.http.post<ProductDto>(PRODUCT_API + 'add', product);
   }
+
+  updateProduct(product: ProductDto) {
+    return this.http.patch<ProductDto>(PRODUCT_API + 'save', product);
+  }
 }
